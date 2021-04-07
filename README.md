@@ -1,0 +1,2 @@
+# Slider
+ Vanilla Script Slider
