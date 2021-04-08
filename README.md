@@ -12,3 +12,4 @@ Vanilla Script Slider
 
 - 자동 넘기기
 - 수동 넘기기
+- 수동 넘기기 (루프 기능)
