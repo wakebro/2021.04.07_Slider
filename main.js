@@ -44,7 +44,7 @@ function calculateHeight() {
 }
 calculateHeight();
 
-// 슬라이드 가로로 배결
+// 슬라이드 가로로 나열
 function calculateLeft() {
   for (let i = 0; i < slideCount; i++) {
     slides[i].style.left = `${i * 100 + 50}%`;
@@ -85,6 +85,97 @@ function updateNav() {
     navNext.classList.remove("disable");
   }
 }
-
 // 첫번째 슬라이드 먼저 보이게 하기
 goToSlide(0);
+
+// Slider3
+const slider3Wrapper = document.querySelector(".slider3_wrap"),
+  slider3Contaner = document.querySelector(".slider3_Container"),
+  nav3Prev = document.querySelector("#prev3"),
+  nav3Next = document.querySelector("#next3");
+let currentIndex3 = 0,
+  slide3Height = 0,
+  slide3Width = 0;
+
+// 첫 번째와 마지막 슬라이드에 붙일 슬라이드 복제
+const firstChild = slider3Contaner.firstElementChild,
+  lastChild = slider3Contaner.lastElementChild,
+  cloneFirst = firstChild.cloneNode(true),
+  cloneLast = lastChild.cloneNode(true);
+slider3Contaner.appendChild(cloneFirst);
+slider3Contaner.insertBefore(cloneLast, slider3Contaner.firstElementChild);
+const slides3 = slider3Contaner.querySelectorAll(".slide3__item"),
+  slide3Count = slides3.length;
+
+// 슬라이드 높이 확인 후 가장 큰 높이 지정
+function checkHeight() {
+  for (let i = 0; i < slide3Count; i++) {
+    if (slide3Height < slides3[i].offsetHeight) {
+      slide3Height = slides3[i].offsetHeight;
+    }
+  }
+  slider3Wrapper.style.height = `${slide3Height}px`;
+  slider3Contaner.style.height = `${slide3Height}px`;
+}
+checkHeight();
+// 슬라이드 넓이 확인 후 가장 넓은 너비 지정
+function checkWidth() {
+  for (let i = 0; i < slide3Count; i++) {
+    if (slide3Width < slides3[i].offsetWidth) {
+      slide3Width = slides3[i].offsetWidth;
+    }
+  }
+  slider3Wrapper.style.width = `${slide3Width}px`;
+  slider3Contaner.style.width = `${slide3Width}px`;
+}
+checkWidth();
+
+//슬라이드 가로로 나열
+function arryHorizon() {
+  for (let i = 0; i < slide3Count; i++) {
+    slides3[i].style.left = `${i * 100 + 50}%`;
+  }
+}
+arryHorizon();
+
+// 슬라이드 이동
+function goToSlide3(index) {
+  slider3Contaner.style.left = `${-index * 100}%`;
+  slider3Contaner.classList.add("animated");
+  currentIndex3 = index;
+}
+
+// 버튼 클릭 후 슬라이드 이동
+nav3Prev.addEventListener("click", (event) => {
+  event.preventDefault();
+  currentIndex3 > 0
+    ? goToSlide3(currentIndex3 - 1)
+    : goToSlide3(slide3Count - 1);
+  // 무한 루프 슬라이드 기능 추가
+  if (currentIndex3 === 0) {
+    setTimeout(() => {
+      slider3Contaner.style.transition = "0ms";
+      slider3Contaner.style.left = `-${slideCount * 100}%`;
+      currentIndex3 = slideCount;
+    }, 300);
+  } else {
+    slider3Contaner.style.transition = "all 0.3s ease-in";
+  }
+});
+nav3Next.addEventListener("click", (event) => {
+  event.preventDefault();
+  currentIndex3 < slide3Count - 1
+    ? goToSlide3(currentIndex3 + 1)
+    : goToSlide3(0);
+  // 무한 루프 슬라이드 기능 추가
+  if (currentIndex3 === slide3Count - 1) {
+    setTimeout(() => {
+      slider3Contaner.style.transition = "0ms";
+      slider3Contaner.style.left = "-100%";
+      currentIndex3 = 1;
+    }, 300);
+  } else {
+    slider3Contaner.style.transition = "all 0.3s ease-in";
+  }
+});
+goToSlide3(1);
